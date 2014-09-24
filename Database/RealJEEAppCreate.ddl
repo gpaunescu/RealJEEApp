@@ -1,0 +1,26 @@
+CREATE TABLE language (id int(10) NOT NULL AUTO_INCREMENT, code varchar(2) NOT NULL, name varchar(50) NOT NULL UNIQUE, PRIMARY KEY (id));
+CREATE TABLE role_privilege (id_privilege int(10) NOT NULL, id_role int(10) NOT NULL);
+CREATE TABLE user_role (id_user bigint(19) NOT NULL, id_role int(10) NOT NULL);
+CREATE TABLE role (id int(10) NOT NULL AUTO_INCREMENT, name varchar(50) NOT NULL UNIQUE, description varchar(255), PRIMARY KEY (id));
+CREATE TABLE privilege (id int(10) NOT NULL AUTO_INCREMENT, code varchar(50) NOT NULL, PRIMARY KEY (id));
+CREATE TABLE `user` (id bigint(19) NOT NULL AUTO_INCREMENT, username varchar(20) NOT NULL UNIQUE, first_name varchar(100) NOT NULL, last_name varchar(100) NOT NULL, email varchar(150) NOT NULL UNIQUE, id_language int(10) NOT NULL, PRIMARY KEY (id));
+CREATE TABLE menu (id int(10) NOT NULL AUTO_INCREMENT, id_parent int(10) NOT NULL, position int(10) NOT NULL, action varchar(255) DEFAULT '#', PRIMARY KEY (id));
+CREATE TABLE menu_language (id int(10) NOT NULL AUTO_INCREMENT, id_menu int(10) NOT NULL, id_language int(10) NOT NULL, name varchar(100) NOT NULL UNIQUE, description varchar(255) NOT NULL, PRIMARY KEY (id));
+CREATE TABLE menu_role (id_menu int(10) NOT NULL, id_role int(10) NOT NULL);
+CREATE TABLE privilege_language (id int(10) NOT NULL AUTO_INCREMENT, id_language int(10) NOT NULL, id_privilege int(10) NOT NULL, name varchar(50) NOT NULL UNIQUE, description varchar(255), PRIMARY KEY (id));
+CREATE TABLE role_language (id int(10) NOT NULL AUTO_INCREMENT, id_language int(10) NOT NULL, id_role int(10) NOT NULL, PRIMARY KEY (id));
+ALTER TABLE user_role ADD INDEX FKuser_role933066 (id_user), ADD CONSTRAINT FKuser_role933066 FOREIGN KEY (id_user) REFERENCES `user` (id);
+ALTER TABLE user_role ADD INDEX FKuser_role747040 (id_role), ADD CONSTRAINT FKuser_role747040 FOREIGN KEY (id_role) REFERENCES role (id);
+ALTER TABLE role_privilege ADD INDEX FKrole_privi282874 (id_privilege), ADD CONSTRAINT FKrole_privi282874 FOREIGN KEY (id_privilege) REFERENCES privilege (id);
+ALTER TABLE role_privilege ADD INDEX FKrole_privi564965 (id_role), ADD CONSTRAINT FKrole_privi564965 FOREIGN KEY (id_role) REFERENCES role (id);
+ALTER TABLE `user` ADD INDEX FKuser905528 (id_language), ADD CONSTRAINT FKuser905528 FOREIGN KEY (id_language) REFERENCES language (id);
+ALTER TABLE menu_language ADD INDEX FKmenu_langu749647 (id_menu), ADD CONSTRAINT FKmenu_langu749647 FOREIGN KEY (id_menu) REFERENCES menu (id);
+ALTER TABLE menu_language ADD INDEX FKmenu_langu711404 (id_language), ADD CONSTRAINT FKmenu_langu711404 FOREIGN KEY (id_language) REFERENCES language (id);
+ALTER TABLE menu_role ADD INDEX FKmenu_role139796 (id_menu), ADD CONSTRAINT FKmenu_role139796 FOREIGN KEY (id_menu) REFERENCES menu (id);
+ALTER TABLE menu_role ADD INDEX FKmenu_role456770 (id_role), ADD CONSTRAINT FKmenu_role456770 FOREIGN KEY (id_role) REFERENCES role (id);
+ALTER TABLE privilege_language ADD INDEX FKprivilege_879536 (id_language), ADD CONSTRAINT FKprivilege_879536 FOREIGN KEY (id_language) REFERENCES language (id);
+ALTER TABLE privilege_language ADD INDEX FKprivilege_180581 (id_privilege), ADD CONSTRAINT FKprivilege_180581 FOREIGN KEY (id_privilege) REFERENCES privilege (id);
+ALTER TABLE role_language ADD INDEX FKrole_langu254519 (id_language), ADD CONSTRAINT FKrole_langu254519 FOREIGN KEY (id_language) REFERENCES language (id);
+ALTER TABLE role_language ADD INDEX FKrole_langu939044 (id_role), ADD CONSTRAINT FKrole_langu939044 FOREIGN KEY (id_role) REFERENCES role (id);
+ALTER TABLE menu ADD INDEX FKmenu38170 (id_parent), ADD CONSTRAINT FKmenu38170 FOREIGN KEY (id_parent) REFERENCES menu (id);
+
